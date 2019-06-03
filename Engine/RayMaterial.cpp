@@ -15,6 +15,11 @@ vec3 RayMaterial::reflect(const vec3 & v, const vec3 & n)
 	return v - 2 * dot(v, n)*n;
 }
 
+vec3 RayMaterial::emitted(float u, float v, const glm::vec3 & p) const
+{
+	return glm::vec3(0.0f);
+}
+
 bool metal::scatter(const Ray & r_in, const hit_record & rec, vec3 & attenuation, Ray & scattered) const
 {
 	vec3 reflected = reflect(normalize(r_in.direction()), rec.normal);
@@ -27,7 +32,7 @@ bool lambertian::scatter(const Ray & r_in, const hit_record & rec, vec3 & attenu
 {
 	vec3 target = rec.p + rec.normal + random_in_unit_sphere();
 	scattered = Ray(rec.p, target - rec.p);
-	attenuation = albedo;
+	attenuation = albedo->value(0,0,rec.p);
 	return true;
 }
 
@@ -72,5 +77,22 @@ bool dielectric::scatter(const Ray & r_in, const hit_record & rec, vec3 & attenu
 	else
 		scattered = Ray(rec.p, refracted);
 
+	return true;
+}
+
+bool diffuse_light::scatter(const Ray & r_in, const hit_record & rec, vec3 & attenuation, Ray & scattered) const
+{
+	return false;
+}
+
+glm::vec3 diffuse_light::emitted(float u, float v, const glm::vec3 & p) const
+{
+	return emit->value(u, v, p);
+}
+
+bool isotropic::scatter(const Ray & r_in, const hit_record & rec, vec3 & attenuation, Ray & scattered) const
+{
+	scattered = Ray(rec.p, random_in_unit_sphere());
+	attenuation = albedo->value(rec.u, rec.v, rec.p);
 	return true;
 }

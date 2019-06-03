@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	Raytracer renderer = Raytracer::Raytracer(app.getHeight(), app.getWidth(), cam);
 
 		// new time	
-	const float dt = 0.003f;
+	const float dt = 0.3f;
 	float accumulator = 0.0f;
 	GLfloat currentTime = (GLfloat)glfwGetTime();
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 		GLfloat frameTime = newTime - currentTime;
 
 		//*******************************************************************************************************************
-		frameTime *= 2;
+		frameTime *= 1;
 		currentTime = newTime;
 		accumulator += frameTime;	
 		// show frame rate
@@ -110,10 +110,11 @@ int main(int argc, char *argv[])
 		cam.keyControl(app.getKeys(), dt);
 		cam.mouseControl(app.getXChange(), app.getYChange());
 		renderer.setRayCamera(cam);
-		renderer.rayTraced.clearSampler(app.getKeys());
+		//renderer.rayTraced.clearSampler(app.getKeys());
 		if (app.getMoved())
 		{
-			renderer.rayTraced.mouseMoved();
+			//renderer.rayTraced.mouseMoved();
+			renderer.reset();
 			app.setMoved(false);
 		}
 		

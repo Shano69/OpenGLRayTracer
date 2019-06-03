@@ -59,6 +59,39 @@ void ShaderProgram::use() {
 	if (m_handle > 0) {
 		glUseProgram(m_handle);
 	}
+	else if (comp_handle > 0)
+	{
+		glUseProgram(comp_handle);
+	}
+
+}
+
+bool ShaderProgram::loadComputeShader(const char * cpFile)
+{
+	string cpString = fileToString(cpFile);
+
+	const GLchar* cpSourcePtr = cpString.c_str();
+
+	GLuint cp = glCreateShader(GL_COMPUTE_SHADER);
+	glShaderSource(cp, 1, &cpSourcePtr, NULL);
+	glCompileShader(cp);
+
+	GLint isCompiled = 0;
+	glGetShaderiv(cp, GL_COMPILE_STATUS, &isCompiled);
+
+	// check for compilation errors
+	checkCompileErrors(cp, COMPUTE);
+	
+	comp_handle = glCreateProgram();
+	glAttachShader(comp_handle, cp);
+
+	glLinkProgram(comp_handle);
+
+	//checkCompileErrors(comp_handle, PROGRAM);
+
+	glDeleteShader(cp);
+
+	return true;
 
 }
 
@@ -113,4 +146,5 @@ void ShaderProgram::checkCompileErrors(GLuint shader, ShaderType type) {
 			std::cerr << "Error! Shader failed to compile. (" << type << "): " << errorLog << std::endl;
 		}
 	}
+	
 }

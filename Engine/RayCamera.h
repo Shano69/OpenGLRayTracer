@@ -12,22 +12,24 @@ public:
 
 	//constructor for the camera
 	RayCamera(
-		float aspect = float(180) / float(180),
+		float aspect = float(512) / float(512),
 		float aperture = 0.1,
-		glm::vec3 startPosition = glm::vec3(0.0, 0.0f, -20.0),
-		glm::vec3 startUp = glm::vec3(1.0f, 0.0f, 0.0f),
-		GLfloat startYaw = -90.0f,
+		glm::vec3 startPosition = glm::vec3(0.0, 0.0f, 0.0f),
+		glm::vec3 startUp = glm::vec3(.0f, 1.0f, 0.0f),
+		GLfloat startYaw = 90.0f,
 		GLfloat startPitch = 0.0f, 
-		GLfloat startMoveSpeed = 6.0f,
+		GLfloat startMoveSpeed = 5.01f,
 		GLfloat StartTurnSpeed = 0.4f
 	);
 
 	//get a ray from the camera current possition
 	Ray get_ray(float u, float v);
-
+	glm::vec3 getPos() { return position; }
 	//handle camera possition methods
 	void keyControl(bool* keys, GLfloat deltaTime);
 	void mouseControl(GLfloat xChange, GLfloat yChange);
+	glm::mat4 calculateInvViewMatrix();
+	glm::mat4 calculateInvProjection();
 
 	//methods for determining the clearing of the sampler
 	inline bool getCameraMoved() { return cameraMoved; }

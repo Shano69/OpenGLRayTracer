@@ -1,0 +1,11 @@
+﻿  Application.cpp
+  Engine.cpp
+  GLFWApplication.cpp
+  PolyMesh.cpp
+  Rasterizer.cpp
+c:\users\anton\desktop\engine\src\rasterizer\rasterizer.cpp(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Raytracer.cpp
+c:\users\anton\desktop\engine\src\raytracer\raytracer.cpp(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  ShaderProgram.cpp
+  Texture2D.cpp
+C:\Users\anton\Desktop\Engine\common\GLFW\lib-vc2015\glfw3.lib : fatal error LNK1107: invalid or corrupt file: cannot read at 0x83

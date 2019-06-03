@@ -10,7 +10,10 @@
 #include "HitableList.h"
 #include "RayCamera.h"
 #include "RayMaterial.h"
-
+#include "BVH.h"
+#include "Box.h"
+#include "Triangle.h"
+#include <thread>
 
 
 #include <vector>
@@ -31,6 +34,7 @@ public:
 	~TexCreate();
 
 	void createImage(int h, int w);
+	void createWorld();
 	//image making 
 	glm::vec3 colour(const Ray& r, Hitable *world, int depth);
 	//update camera
@@ -47,6 +51,8 @@ private:
 	RayCamera cam;
 	sampler da_sampler;
 	GLuint da_texture;
+	Hitable *world;
+	GLubyte imageData[300][300][4];
 	unsigned int width;
 	unsigned int x ;
 	unsigned int y ;

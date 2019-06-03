@@ -2,6 +2,7 @@
 #include "Ray.h"
 #include "HitableList.h"
 #include <random>
+#include "RayTexture.h"
 
 class RayMaterial
 {
@@ -25,8 +26,12 @@ public:
 		}
 		else false;
 	}
+
 	//scatter on ray intersection
 	virtual bool scatter(const Ray& r_in, const hit_record& rec, vec3& attenuation, Ray& scattered) const = 0;
+
+	virtual vec3 emitted(float u, float v, const glm::vec3 &p) const;
+
 	//schlick effect for dielectrics
 	static float shlick(float cosine, float ref_idx)
 	{
@@ -34,7 +39,7 @@ public:
 		r0 = r0 * r0;
 		return r0 + (1 - r0)*pow((1 - cosine), 5);
 	}
-
+	
 	static vec3 random_in_unit_sphere()
 	{
 		// Seed with real random number if available
@@ -48,17 +53,17 @@ public:
 		do {
 			p = 2.0f*vec3(distribution(e), distribution(e), distribution(e)) - vec3(1, 1, 1);
 		} while (pow(glm::length(p),2) >= 1.0f);
-		return p;
+		return normalize(p);
 	}
 };
 
 class lambertian : public RayMaterial
 {
 public: 
-	lambertian(const vec3& a) :albedo(a) {}
+	lambertian(RayTexture *a) :albedo(a) {}
 	//scatter in a random direction; no reflection
 	virtual bool scatter(const Ray& r_in, const hit_record& rec, vec3& attenuation, Ray& scattered) const;
-	vec3 albedo;
+	RayTexture *albedo;
 };
 
 class metal : public RayMaterial
@@ -82,4 +87,23 @@ public:
 
 	float ref_idx;
 
+};
+
+class diffuse_light :public RayMaterial
+{
+public:
+	diffuse_light(RayTexture *a) : emit(a) {};
+	virtual bool scatter(const Ray& r_in, const hit_record& rec, vec3& attenuation, Ray& scattered) const;
+	virtual glm::vec3 emitted(float u, float v, const glm::vec3 &p) const;
+
+		RayTexture *emit;
+};
+
+class isotropic :public RayMaterial
+{
+public:
+	isotropic(RayTexture *a) :albedo(a) {}
+	virtual bool scatter(const Ray& r_in, const hit_record& rec, vec3& attenuation, Ray& scattered) const;
+
+	RayTexture *albedo;
 };

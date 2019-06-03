@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include<vector>
 #include <string>
 
 using std::string;
@@ -18,13 +19,17 @@ public:
 	enum ShaderType{
 		VERTEX,
 		FRAGMENT,
-		PROGRAM
+		PROGRAM,
+		COMPUTE
 	};
 
 	GLuint getHandle() { return m_handle; }
+	GLuint getCompHandle() { return comp_handle; }
 
 	bool loadShaders(std::string vsFile, std::string fsFile) { return loadShaders(vsFile.c_str(), fsFile.c_str()); }
 	bool loadShaders(const char* vsFile, const char* fsFile);
+	//compute shader
+	bool loadComputeShader(const char* cpFile);
 	void init();
 	void use();
 
@@ -35,5 +40,6 @@ private:
 	void checkCompileErrors(GLuint shader, ShaderType type);
 
 	GLuint m_handle;
+	GLuint comp_handle;
 
 };

@@ -19,19 +19,15 @@ TexCreate::~TexCreate()
 
 void TexCreate::createImage(int h, int w)
 {
-
-
 	// Seed with real random number if available
 	random_device r;
 	// Create random number generator
 	default_random_engine e(r());
 	// Create a distribution - we want doubles between 0.0 and 1.0
 	uniform_real_distribution<double> distribution(0.0, 1.0);
-
-	const int width = 180;
-	const int height = 180;
-
-	GLubyte imageData[width][height][4];
+	
+	const int width = 300;
+	const int height = 300;
 
 	int i, j, c;
 	int ns = 1;
@@ -43,15 +39,6 @@ void TexCreate::createImage(int h, int w)
 	glm::vec3 origin(0.0, 0.0, 0.0);
 	da_sampler.samplesppx++;
 
-	Hitable *list[6];
-	list[0] = new Sphere(vec3(0.3, 2.5, 2.5), 0.9, new lambertian(vec3(0.5,0.2,0.3)));
-	list[1] = new Sphere(vec3(-100.5, 0, -1), 100, new lambertian(vec3(0.8, 0.8, 0.2)));
-	list[2] = new Sphere(vec3(0.9, 2.5, -2.5), 1.5, new metal(vec3(0.4, 0.4, 0.4), 0.7));
-	list[3] = new Sphere(vec3(0.6, -2.5, 2.5), 1.2, new metal(vec3(0.4, 0.4, 0.4), 0.1));
-	list[4] = new Sphere(vec3(0.5, -2.5, -2.5), 1.0, new dielectric(1.5));
-	list[5] = new Sphere(vec3(0.5, -2.5, -2.5), -0.98, new dielectric(1.5));
-
-	Hitable *world = new HitableList(list, 6);
 	vec3 lookfrom(5, 5, 9);
 	vec3 lookat(0, 0, 0);
 	float dist_to_focus = 10.0;
@@ -77,27 +64,52 @@ void TexCreate::createImage(int h, int w)
 				vec3 col = vec3(0.0);
 
 				//antialiasing by sampling
-				for (int s = 0; s < ns; s++)
-				{
-					//add distribution(e) to make it sample surrounding points
-					float u = float(i + distribution(e)) / float(width);
-					float v = float(j + distribution(e)) / float(height);
-					Ray r = cam.get_ray(u, v);
-					vec3 p = r.point_at_parameter(2.0);
-					col += colour(r, world, 0);
-				}
+				//add distribution(e) to make it sample surrounding points
+				float u = float(i + distribution(e)) / float(width);
+				float v = float(j + distribution(e)) / float(height);
+				Ray r = cam.get_ray(u, v);
+				vec3 p = r.point_at_parameter(2.0);
+				col += colour(r, world, 0);
 
 				col /= float(ns);
 				col = vec3(sqrt(col.x), sqrt(col.y), sqrt(col.z));
 				
+
+				//BUG begone!!!
+				if (!(col.x == col.x) )col = glm::vec3(0);
+				if(!(col.y == col.y))col = glm::vec3(0);
+				if(!( col.z == col.z))col = glm::vec3(0);
+
+
 				//store sample
 				da_sampler.samples[i + j * width] += col;
 				glm::vec3 c = da_sampler.samples[i + j * width] / static_cast<float>(da_sampler.samplesppx);
 
-
-				imageData[j][i][0] = (GLubyte)int(255.99 * c[0]);
-				imageData[j][i][1] = (GLubyte)int(255.99 * c[1]);
-				imageData[j][i][2] = (GLubyte)int(255.99 * c[2]);
+				if (c[0] > 1)
+				{
+					imageData[j][i][0] = (GLubyte)int(255.99 );
+				}
+				else
+				{
+					imageData[j][i][0] = (GLubyte)int(255.99 * c[0]);
+				}
+				if (c[1] > 1)
+				{
+					imageData[j][i][1] = (GLubyte)int(255.99);
+				}
+				else
+				{
+					imageData[j][i][1] = (GLubyte)int(255.99 * c[1]);
+				}
+				if (c[2] > 1)
+				{
+					imageData[j][i][2] = (GLubyte)int(255.99);
+				}
+				else
+				{
+					imageData[j][i][2] = (GLubyte)int(255.99 * c[2]);
+				}
+				
 				imageData[j][i][3] = (GLubyte)int(255.99);
 			}
 		}
@@ -120,28 +132,99 @@ void TexCreate::createImage(int h, int w)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void TexCreate::createWorld()
+{
+
+	// Seed with real random number if available
+	random_device r;
+	// Create random number generator
+	default_random_engine e(r());
+	// Create a distribution - we want doubles between 0.0 and 1.0
+	uniform_real_distribution<double> distribution(0.0, 1.0);
+	
+
+	RayTexture *checker = new checker_texture(new constant_texture(glm::vec3(0.65, 0.05, 0.05)), new constant_texture(glm::vec3(0.9, 0.9, 0.9)));
+	RayTexture *pertex = new noise_texture( 4);
+	RayMaterial *red = new lambertian(new constant_texture(vec3(0.65, 0.05, 0.05)));
+	RayMaterial *white = new lambertian(new constant_texture(vec3(0.73, 0.73, 0.73)));
+	RayMaterial *green = new lambertian(new constant_texture(vec3(0.12, 0.45, 0.15)));
+	RayMaterial *m = new lambertian(new constant_texture(vec3(0.12, 0.45, 0.15)));
+	RayMaterial *light = new diffuse_light(new constant_texture(vec3(30)));
+	RayMaterial *ground = new lambertian(new constant_texture(vec3(0.48, 0.83, 0.53)));
+	RayMaterial * aluminium = new metal(vec3(0.8, 0.85, 0.88), 0.0);
+
+	//mirror
+	vec3 v1 = vec3(25, 10, -15);
+	vec3 v2 = vec3(25, 10, 15);
+	vec3 v3 = vec3(25, 41, 15);
+	vec3 v4 = vec3(25, 41, -15);
+
+
+	//ground
+	vec3 v5 = vec3(-30, 0, -20);
+	vec3 v6 = vec3(30, 0, -20);
+	vec3 v7 = vec3(30, 0, 20);
+	vec3 v8 = vec3(-30, 0, 20);
+
+	//another mirror
+	vec3 v11 = vec3(-25, 10, -15);
+	vec3 v22 = vec3(-25, 10, 15);
+	vec3 v33 = vec3(-25, 41, 15);
+	vec3 v44 = vec3(-25, 41, -15);
+
+
+	Hitable **list = new Hitable*[500];
+	int k = 0;
+	
+	list[k++] = new Box(vec3(-10, 40, -15), glm::vec3(10, 41, 45), light);
+	list[k++] = new Box(vec3(-15, 5, -5), glm::vec3(-5, 15, 5), red);
+
+	list[k++] = new Sphere(vec3(5.0, 8.0, 5.0), 5, new lambertian(pertex));
+	list[k++] = new Sphere(vec3(5.0, 10.0, -5.5), 4, new metal(vec3(0.4, 0.4, 0.2), 0.3));
+	list[k++] = new Sphere(vec3( -5, 15.5, 4.5), 4.5, new metal(vec3(0.7, 0.3, 0.2), 0.01));
+	list[k++] = new Sphere(vec3( -4.5, 20.0, -6.0), 3.0, new dielectric(1.5));
+	list[k++] = new Sphere(vec3( -4.5, 20.0, -6.0), -2.99, new dielectric(1.5));
+
+
+	list[k++] = new Triangle(v1, v2, v3, aluminium);
+	list[k++] = new Triangle(v1, v3, v4, aluminium);
+
+	list[k++] = new Triangle(v22, v11, v33, aluminium);
+	list[k++] = new Triangle(v33, v11, v44, aluminium);
+
+	list[k++] = new Triangle(v6, v5, v7, white);
+	list[k++] = new Triangle(v7, v5, v8, white);
+	
+
+	//world = new BVH(list,k,0,1);
+	world = new BVH(list, k,0,1);
+}
+
 
 glm::vec3 TexCreate::colour(const Ray & r, Hitable *world, int depth)
 {
 	hit_record rec;
-	if (world->hit(r, 0.001, FLT_MAX, rec))
-	{
+	if (world->hit(r, 0.001, FLT_MAX, rec)) {
 		Ray scattered;
 		vec3 attenuation;
-		if (depth < 10 && rec.mat_ptr->scatter(r, rec, attenuation, scattered))
-		{
-			return attenuation * colour(scattered, world, depth + 1);
+		vec3 emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+		if (depth < 5 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) 
+		{	
+			return emitted + attenuation * colour(scattered, world, depth + 1);
 		}
-		else
-		{
-			return vec3(0, 0, 0);
+		else {
+				return emitted;
 		}
 	}
-	else
-	{
+	else {
 		vec3 unit_direction = normalize(r.direction());
-		float t = 0.5*(unit_direction.y+1.0);
-		return (1.0 - t)*vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
+		float t = 0.5*(unit_direction.y + 1.0);
+		auto returnValue = (1.0 - t)*vec3(.1, 0.1, 0.1) + t * vec3(0.01, 0.02, 0.05);
+		if (returnValue.x > 1.0 || returnValue.y > 1.0 || returnValue.z > 1.0)
+		{
+			return returnValue;
+		}
+		return returnValue;
 	}
 }
 
@@ -153,10 +236,8 @@ void TexCreate::clearSampler(bool * keys)
 	{
 		if (keys[key])
 		{
-			for (unsigned int j = 0; j < 180 * 180; j++)
-			{
-				da_sampler.samples[j] = glm::vec3(0.0);
-			}
+			
+			da_sampler.samples = new glm::vec3[300*300];
 			da_sampler.samplesppx = 0;
 		}
 	}
@@ -164,7 +245,7 @@ void TexCreate::clearSampler(bool * keys)
 
 void TexCreate::mouseMoved()
 {
-	for (unsigned int j = 0; j < 180 * 180; j++)
+	for (unsigned int j = 0; j < 300 * 300; j++)
 	{
 		da_sampler.samples[j] = glm::vec3(0.0);
 	}

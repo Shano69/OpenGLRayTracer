@@ -1,0 +1,94 @@
+﻿  HitableList.cpp
+c:\users\anton\desktop\engine\hitablelist.cpp(10): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  RayCamera.cpp
+  Sphere.cpp
+  Application.cpp
+  Engine.cpp
+  GLFWApplication.cpp
+  PolyMesh.cpp
+  Rasterizer.cpp
+  Raytracer.cpp
+  ShaderProgram.cpp
+  Texture2D.cpp
+  TexCreate.cpp
+c:\users\anton\desktop\engine\texcreate.cpp(41): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\anton\desktop\engine\texcreate.cpp(70): warning C4244: '+=': conversion from 'T' to 'GLubyte', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\anton\desktop\engine\texcreate.cpp(71): warning C4244: '+=': conversion from 'T' to 'GLubyte', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\anton\desktop\engine\texcreate.cpp(72): warning C4244: '+=': conversion from 'T' to 'GLubyte', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\anton\desktop\engine\texcreate.cpp(30): warning C4101: 'c': unreferenced local variable
+c:\users\anton\desktop\engine\texcreate.cpp(134): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\anton\desktop\engine\texcreate.cpp(142): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\anton\desktop\engine\texcreate.cpp(152): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+c:\users\anton\desktop\engine\src\texture2d.cpp(53): warning C4715: 'Texture2D::loadTexture': not all control paths return a value
+Engine.obj : error LNK2001: unresolved external symbol ___glewBindBuffer
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewBindBuffer
+Engine.obj : error LNK2001: unresolved external symbol ___glewBufferData
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewBufferData
+Engine.obj : error LNK2001: unresolved external symbol ___glewGenBuffers
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewGenBuffers
+Engine.obj : error LNK2001: unresolved external symbol ___glewEnableVertexAttribArray
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewEnableVertexAttribArray
+Engine.obj : error LNK2001: unresolved external symbol ___glewVertexAttribPointer
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewVertexAttribPointer
+Engine.obj : error LNK2001: unresolved external symbol ___glewBindVertexArray
+GLFWApplication.obj : error LNK2001: unresolved external symbol ___glewBindVertexArray
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewBindVertexArray
+Raytracer.obj : error LNK2001: unresolved external symbol ___glewBindVertexArray
+Engine.obj : error LNK2001: unresolved external symbol ___glewGenVertexArrays
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewGenVertexArrays
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glewInit@0 referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwInit referenced in function "public: __thiscall GLFWApplication::GLFWApplication(char const *,int,int)" (??0GLFWApplication@@QAE@PBDHH@Z)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwTerminate referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwWindowHint referenced in function "public: __thiscall GLFWApplication::GLFWApplication(char const *,int,int)" (??0GLFWApplication@@QAE@PBDHH@Z)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwCreateWindow referenced in function "public: __thiscall GLFWApplication::GLFWApplication(char const *,int,int)" (??0GLFWApplication@@QAE@PBDHH@Z)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwWindowShouldClose referenced in function "public: virtual bool __thiscall GLFWApplication::shouldRun(void)" (?shouldRun@GLFWApplication@@UAE_NXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSetWindowShouldClose referenced in function "void __cdecl keyCallback(struct GLFWwindow *,int,int,int,int)" (?keyCallback@@YAXPAUGLFWwindow@@HHHH@Z)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSetWindowTitle referenced in function "public: virtual void __thiscall GLFWApplication::showFPS(void)" (?showFPS@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwGetFramebufferSize referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwPollEvents referenced in function "public: virtual void __thiscall GLFWApplication::pollEvents(void)" (?pollEvents@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSetInputMode referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSetKeyCallback referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSetCursorPosCallback referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSetScrollCallback referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwGetTime referenced in function "public: virtual void __thiscall GLFWApplication::showFPS(void)" (?showFPS@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwMakeContextCurrent referenced in function "public: virtual void __thiscall GLFWApplication::init(void)" (?init@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2019: unresolved external symbol _glfwSwapBuffers referenced in function "public: virtual void __thiscall GLFWApplication::display(void)" (?display@GLFWApplication@@UAEXXZ)
+GLFWApplication.obj : error LNK2001: unresolved external symbol _glewExperimental
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewDeleteBuffers
+PolyMesh.obj : error LNK2001: unresolved external symbol ___glewDeleteVertexArrays
+Rasterizer.obj : error LNK2001: unresolved external symbol ___glewGetUniformLocation
+Raytracer.obj : error LNK2001: unresolved external symbol ___glewGetUniformLocation
+Rasterizer.obj : error LNK2001: unresolved external symbol ___glewUniformMatrix4fv
+Rasterizer.obj : error LNK2001: unresolved external symbol ___glewUseProgram
+Raytracer.obj : error LNK2001: unresolved external symbol ___glewUseProgram
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewUseProgram
+Raytracer.obj : error LNK2001: unresolved external symbol ___glewUniform1i
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewAttachShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewCompileShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewCreateProgram
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewCreateShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewDeleteProgram
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewDeleteShader
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewGetProgramInfoLog
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewGetProgramiv
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewGetShaderInfoLog
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewGetShaderiv
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewLinkProgram
+ShaderProgram.obj : error LNK2001: unresolved external symbol ___glewShaderSource
+Texture2D.obj : error LNK2001: unresolved external symbol ___glewGenerateMipmap
+C:\Users\anton\Desktop\Engine\\common\GLEW\lib\Release\x64\glew32s.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\anton\Desktop\Engine\\common\GLFW\lib-vc2015\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\anton\Desktop\Engine\\Debug\Engine.exe : fatal error LNK1120: 44 unresolved externals

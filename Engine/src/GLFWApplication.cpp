@@ -5,8 +5,8 @@
 int GLFWApplication::SCREEN_WIDTH = 0;
 int GLFWApplication::SCREEN_HEIGHT = 0;
 
-GLfloat GLFWApplication::lastX = 180 / 2.0;
-GLfloat GLFWApplication::lastY = 180 / 2.0;
+GLfloat GLFWApplication::lastX = 300 / 2.0;
+GLfloat GLFWApplication::lastY = 300 / 2.0;
 GLfloat GLFWApplication::xChange = 0.0f;
 GLfloat GLFWApplication::yChange = 0.0f;
 
@@ -61,13 +61,14 @@ void GLFWApplication::createCallbacks()
 		if (action == GLFW_PRESS)
 		{
 			keys[key] = true;
+			mouseMoved = true;
 		}
 		else if (action == GLFW_RELEASE)
 		{
 			keys[key] = false;
+			mouseMoved = true;
 		}
 	}
-
 }
 
 // called whenever a mouse event is triggered
@@ -89,7 +90,7 @@ void GLFWApplication::createCallbacks()
 	 GLFWApplication::lastX = xPos;
 	 GLFWApplication::lastY = yPos;
 
-	 if (xChange > 0.00001 || yChange > 0.00001)
+	 if (xChange > 0 || yChange > 0 || xChange < 0 || yChange < 0)
 	 {
 		 mouseMoved = true;
 	 }
@@ -179,7 +180,7 @@ void GLFWApplication::showFPS() {
 		frameCount = 0;
 	}
 	frameCount++;
-
+	
 }
 
 
@@ -197,6 +198,8 @@ void GLFWApplication::display() {
 	glfwSwapBuffers(m_window);
 }
 
-void GLFWApplication::terminate() {
-	glfwTerminate();
+void GLFWApplication::terminate() 
+{
+     	glfwTerminate();
 }
+ 
