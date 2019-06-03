@@ -77,6 +77,11 @@ struct Ray
     vec3 origin;
 };
 
+float opSubtraction( float d1, float d2 )
+{
+    return max(-d1,d2);
+}
+
 float sdSphere( vec3 p, float s )
 {
     return length(p)-s;
@@ -91,6 +96,25 @@ float sdBox( vec3 p, vec3 b )
 float sdPlane( vec3 p )
 {
 	return p.y;
+}
+
+float sdEquilateralTriangle(  in vec2 p )
+{
+    const float k = 1.73205;//sqrt(3.0);
+    p.x = abs(p.x) - 1.0;
+    p.y = p.y + 1.0/k;
+    if( p.x + k*p.y > 0.0 ) p = vec2( p.x - k*p.y, -k*p.x - p.y )/2.0;
+    p.x += 2.0 - 2.0*clamp( (p.x+2.0)/2.0, 0.0, 1.0 );
+    return -length(p)*sign(p.y);
+}
+
+float sdTriPrism( vec3 p, vec2 h )
+{
+    vec3 q = abs(p);
+    float d1 = q.z-h.y;
+    h.x *= 0.866025;
+    float d2 = sdEquilateralTriangle(p.xy/h.x)*h.x;
+    return length(max(vec2(d1,d2),0.0)) + min(max(d1,d2), 0.);
 }
 
 struct sphere 
@@ -413,12 +437,24 @@ vec2 map( in vec3 pos )
 {
     vec2 res = vec2( 1e10, 0.0 );
     //METAL = 3 DIELECTRIC = 2
+    //glass sphere
+    float d1 =  sdSphere(    pos-vec3( 0.0,1.26, -3.0), 1.25 );
+    float d2 =  sdSphere(    pos-vec3( 0.0,1.26, -3.0), 1.00 );
+    float dt = opSubtraction(d2,d1);
+    res = vec2(min(dt,res.x),2.0);
 
-    res = opU( res, vec2( sdSphere(    pos-vec3( 0.0,1.26, 3.0), 1.25 ), 2.0 ) );
+    //glass cube
+    float d3 = sdBox(       pos-vec3( 5.00, 3.00, -3.00), vec3(2.75) );  
+    float d4 = sdBox(       pos-vec3( 5.25, 2.75, -2.75), vec3(2.25) ); 
+    float dt2 = opSubtraction(d4,d3);
+    res = vec2(min(dt2,res.x),2.0);
 
-    res = opU( res, vec2( sdBox(       pos-vec3( 5.0,2.95, -3.0), vec3(2.75) ), 3.0 ) );   
-    res = opU( res, vec2( sdBox(       pos-vec3( 5.0,2.95, 3.0), vec3(2.75) ), 2.0 ) );  
+    //metal box(mirror)
+    res = opU( res, vec2( sdBox(       pos-vec3( 5.0,2.95, 3.0), vec3(2.75) ), 3.0 ) );   
+  
+    //some objects
     res = opU( res, vec2( sdBox(       pos-vec3(-2.0, 0.90, 0.0), vec3(0.25) ), 69.0 ) );
+    res = opU( res, vec2( sdTriPrism(  pos-vec3(-1.0,0.25,-1.0), vec2(1.25,0.01) ),43.5 ) );
 
     //res = opU( res, vec2( sdPlane(pos-0),3.0 ) );
     return res;
